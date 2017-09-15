@@ -47,14 +47,18 @@ server.on("listening", function () {
 //---------------------------------------------------------------------------
 server.on("message", function (msg, rinfo) {
 
-    console.log("Recebida mensagem de: " + rinfo.address + ":" + rinfo.port);
-    console.log("ASCII: " + msg);
+    console.log("Conectado com: " + rinfo.address + ":" + rinfo.port);
+    console.log("Mensagem recebida: " + msg);
 
     //salva mensagem em banco de dados
-    sql = "insert into tbl_mensagens (mensagem) values ('" + msg +"')";
+    sql = "insert into tbl_mensagens (Endereco_IP, Porta, mensagem) values (" +
+    "'" + rinfo.address + "', "
+    "'" + rinfo.port + "', "
+    "'" + msg +"')";
     con.query(sql, function (err, result) {
         if (err) { console.log("Erro ao tentar Gravar mensagem no banco de dados. Detalhes: " + err); return; }
-        console.log("registros Inseridos com sucesso");
+        console.log("Mensagem gravada em Banco de dados.");
+        console.log("----------------------------------------------------");
     });
 
     var verificaTX = msg.indexOf(",TX#");
