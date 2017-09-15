@@ -52,11 +52,12 @@ server.on("message", function (msg, rinfo) {
 
     //salva mensagem em banco de dados
     sql = "insert into tbl_mensagens (Endereco_IP, Porta, mensagem) values (" +
-    "'" + rinfo.address + "', "
-    "'" + rinfo.port + "', "
-    "'" + msg +"')";
+    "'" + rinfo.address + "', " +
+    "'" + rinfo.port + "', " +
+    "'" + msg + "')";
+
     con.query(sql, function (err, result) {
-        if (err) { console.log("Erro ao tentar Gravar mensagem no banco de dados. Detalhes: " + err); return; }
+        if (err) { console.log("Erro ao Gravar. Detalhes: " + err); return; }
         console.log("Mensagem gravada em Banco de dados.");
         console.log("----------------------------------------------------");
     });
