@@ -1,0 +1,88 @@
+//===========================================================================
+// PARÂMETROS
+//---------------------------------------------------------------------------
+// Banco de Dados SQL
+var con_host = "localhost";         // endereço do host
+var con_user = "admserver";         // usuario
+var con_pwd = "a123456@";           // senha
+var con_db = "DB_Rastreadores";     // nome do banco de dados
+
+var s_port = 20500;                 // Porta de comunicaçao UDP
+
+//===========================================================================
+
+
+//---------------------------------------------------------------------------
+// Carrega módulo UDP e outros
+//---------------------------------------------------------------------------
+var dgram = require("dgram");
+var server = dgram.createSocket("udp4");
+
+var responder = 0;
+
+
+//---------------------------------------------------------------------------
+// Conexão ao Server MySQL
+//---------------------------------------------------------------------------
+var mysql = require('mysql');
+var con = mysql.createConnection({
+    host: con_host,
+    user: con_user,
+    password: con_pwd,
+    database: con_db
+});
+
+
+//---------------------------------------------------------------------------
+// LISTENING - Servidor fica aguardando na porta especificada
+//---------------------------------------------------------------------------
+server.on("listening", function () {
+    var address = server.address();
+    console.log("Servidor escutando IP-Porta: " + address.address + ":" + address.port);
+});
+
+
+//---------------------------------------------------------------------------
+// Tratamento de Mensagens Recebidas
+//---------------------------------------------------------------------------
+server.on("message", function (msg, rinfo) {
+
+    console.log("Recebida mensagem de: " + rinfo.address + ":" + rinfo.port);
+    console.log("ASCII: " + msg);
+
+    //salva mensagem em banco de dados
+    sql = "insert into tbl_mensagens (mensagem) values ('" + msg +"')";
+    con.query(sql, function (err, result) {
+        if (err) { console.log("Erro ao tentar Gravar mensagem no banco de dados. Detalhes: " + err); return; }
+        console.log("registros Inseridos com sucesso");
+    });
+
+    var verificaTX = msg.indexOf(",TX#");
+    var verificaUP = msg.indexOf(",UP#");
+    if (verificaTX != -1) { responder = 1 }
+    if (verificaUP != -1) { responder = 1 }
+
+    if (responder == 1) {
+        // resposta a comandos TX e UP
+        var ack = new Buffer(msg);
+        server.send(ack, 0, ack.length, rinfo.port, rinfo.address, function (err, bytes) {
+            console.log("Resposta a comandos TX/UP Enviada.");
+            console.log("");
+        });
+        responder = 0;
+    }
+
+});
+
+// Erro Tratamento
+server.on("error", function (err) {
+    console.log("server error: \n" + err.stack);
+    server.close();
+});
+
+// Encerramento de conexão
+server.on("close", function () {
+    console.log("closed.");
+});
+
+server.bind(s_port);
