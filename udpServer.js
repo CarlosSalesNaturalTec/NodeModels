@@ -2,10 +2,10 @@
 // PARÂMETROS
 //---------------------------------------------------------------------------
 // Banco de Dados SQL
-var con_host = "localhost";         // endereço do host
-var con_user = "admserver";         // usuario
-var con_pwd = "a123456@";           // senha
-var con_db = "DB_Rastreadores";     // nome do banco de dados
+var con_host = "br-cdbr-azure-south-b.cloudapp.net";         // endereço do host
+var con_user = "b06799fb954ded";                             // usuario
+var con_pwd = "d8a197e8";                                   // senha
+var con_db = "dbrastreadores";                              // nome do banco de dados
 
 var s_port = 20500;                 // Porta de comunicaçao UDP
 
@@ -49,6 +49,8 @@ server.on("message", function (msg, rinfo) {
 
     console.log("Conectado com: " + rinfo.address + ":" + rinfo.port);
     console.log("Mensagem recebida: " + msg);
+
+    
 
     //salva mensagem em banco de dados
     sql = "insert into tbl_mensagens (Endereco_IP, Porta, mensagem) values (" +

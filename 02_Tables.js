@@ -1,10 +1,10 @@
 //===========================================================================
 // PARÂMETROS
 //---------------------------------------------------------------------------
-var con_host = "localhost";
-var con_user = "admserver";
-var con_pwd = "a123456@";
-var con_db = "DB_Rastreadores";
+var con_host = "br-cdbr-azure-south-b.cloudapp.net";         // endereço do host
+var con_user = "b06799fb954ded";                             // usuario
+var con_pwd = "d8a197e8";                                   // senha
+var con_db = "dbrastreadores";                              // nome do banco de dados
 
 var Fim = "Pressione CTRL+C para finalizar.";
 
