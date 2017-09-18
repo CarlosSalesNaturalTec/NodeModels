@@ -9,7 +9,7 @@ var client = dgram.createSocket("udp4");
 
 //---------------------------------------------------------------------------
 // Envia mensagem 
-var message = new Buffer("2a45542c37313939333431363839362c555023", "hex");
+var message = new Buffer("2a45542c3335383135353130303039343831392c5458", "hex");
 
 client.on("message", function(msg, rinfo) {
   console.log("Retorno Recebido: " + msg.toString("hex"));

@@ -50,26 +50,28 @@ server.on("message", function (msg, rinfo) {
     console.log("Conectado com: " + rinfo.address + ":" + rinfo.port);
     console.log("Mensagem recebida: " + msg);
 
-    
-
-    //salva mensagem em banco de dados
-    sql = "insert into tbl_mensagens (Endereco_IP, Porta, mensagem) values (" +
-    "'" + rinfo.address + "', " +
-    "'" + rinfo.port + "', " +
-    "'" + msg + "')";
-
-    con.query(sql, function (err, result) {
-        if (err) { console.log("Erro ao Gravar. Detalhes: " + err); return; }
-        console.log("Mensagem gravada em Banco de dados.");
-        console.log("----------------------------------------------------");
-    });
-
     var verificaTX = msg.indexOf(",TX#");
     var verificaUP = msg.indexOf(",UP#");
     if (verificaTX != -1) { responder = 1 }
     if (verificaUP != -1) { responder = 1 }
 
     if (responder == 1) {
+
+        var msg_array = msg.split(',');
+
+        //salva mensagem em banco de dados
+        sql = "insert into tbl_mensagens (Endereco_IP, Porta, mensagem, sn) values (" +
+            "'" + rinfo.address + "', " +
+            "'" + rinfo.port + "', " +
+            "'" + msg + "', " +
+            "'" + msg_array[1] + "'" +
+            ")";
+        con.query(sql, function (err, result) {
+            if (err) { console.log("Erro ao Gravar. Detalhes: " + err); return; }
+            console.log("Mensagem gravada em Banco de dados.");
+            console.log("----------------------------------------------------");
+        });
+        
         // resposta a comandos TX e UP
         var ack = new Buffer(msg);
         server.send(ack, 0, ack.length, rinfo.port, rinfo.address, function (err, bytes) {
@@ -77,6 +79,7 @@ server.on("message", function (msg, rinfo) {
             console.log("");
         });
         responder = 0;
+
     }
 
 });
