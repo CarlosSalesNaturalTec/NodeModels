@@ -62,7 +62,12 @@ server.on("message", function (msg, rinfo) {
     }
 
     //02 - Tratamento de Mensagem padrão de Localização
-    if (msgstr.indexOf(",HB,") != -1) { salva_mensagem_localizacao(msgstr, rinfo.address, rinfo.port); }
+    if (msgstr.indexOf(",HB,") != -1) { salva_mensagem_localizacao(msgstr, rinfo.address, rinfo.port); } 
+    else {  
+        
+        // Demais Mensagens
+        salva_mensagem(msg, rinfo.address, rinfo.port, msg_array[1]);
+    }
 
 });
 
@@ -141,7 +146,7 @@ function salva_mensagem_localizacao(loc_msg, loc_adress, loc_port) {
         Kilometragem = myarray[14];
         Altitude = myarray[15];
     } catch (err) {
-        console.log("Não foi possivel salvar mensagem de Localização")
+        console.log("Mensagem de Localização fora do Padrão")
     }
 
     //salva mensagem em banco de dados
@@ -168,7 +173,7 @@ function salva_mensagem_localizacao(loc_msg, loc_adress, loc_port) {
 
     con.query(sql, function (err, result) {
         if (err) { console.log("Erro ao Gravar. Detalhes: " + err); return; }
-        console.log("Mensagem de Localização gravada em Banco de dados.");
+        console.log("Localização armazenada em Histórico");
     });
 
     //Atualiza tabela de última localição
@@ -181,7 +186,7 @@ function salva_mensagem_localizacao(loc_msg, loc_adress, loc_port) {
 
     con.query(sql, function (err, result) {
         if (err) { console.log("Erro ao Gravar. Detalhes: " + err); return; }
-        console.log("Mensagem de Localização II gravada em Banco de dados.");
+        console.log("Localização Atualizada");
     });
 }
 
