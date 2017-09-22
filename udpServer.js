@@ -46,25 +46,25 @@ server.on("listening", function () {
 // Tratamento de Mensagens Recebidas
 //---------------------------------------------------------------------------
 server.on("message", function (msg, rinfo) {
-
+    console.log("");
     console.log("Conectado com: " + rinfo.address + ":" + rinfo.port);
     console.log("Mensagem recebida: " + msg);
 
     var msgstr = msg.toString("ascii");
+    var msg_array = msgstr.split(',');
 
     //01 - Resposta aos comandos TX e UP
     var verificaTX = msgstr.indexOf(",TX#"); if (verificaTX != -1) { responder_txup = 1 }
     var verificaUP = msgstr.indexOf(",UP#"); if (verificaUP != -1) { responder_txup = 1 }
     if (responder_txup == 1) {
-        var msg_array = msgstr.split(',');
         salva_mensagem(msg, rinfo.address, rinfo.port, msg_array[1]);
         responde_TXUP(msg, rinfo.address, rinfo.port);
+        return;
     }
 
     //02 - Tratamento de Mensagem padrão de Localização
     if (msgstr.indexOf(",HB,") != -1) { salva_mensagem_localizacao(msgstr, rinfo.address, rinfo.port); } 
     else {  
-        
         // Demais Mensagens
         salva_mensagem(msg, rinfo.address, rinfo.port, msg_array[1]);
     }
@@ -146,7 +146,7 @@ function salva_mensagem_localizacao(loc_msg, loc_adress, loc_port) {
         Kilometragem = myarray[14];
         Altitude = myarray[15];
     } catch (err) {
-        console.log("Mensagem de Localização fora do Padrão")
+        console.log("Mensagem de Localizacao fora do Padrao")
     }
 
     //salva mensagem em banco de dados
@@ -173,7 +173,7 @@ function salva_mensagem_localizacao(loc_msg, loc_adress, loc_port) {
 
     con.query(sql, function (err, result) {
         if (err) { console.log("Erro ao Gravar. Detalhes: " + err); return; }
-        console.log("Localização armazenada em Histórico");
+        console.log("Localizacao armazenada em Historico");
     });
 
     //Atualiza tabela de última localição
@@ -186,7 +186,7 @@ function salva_mensagem_localizacao(loc_msg, loc_adress, loc_port) {
 
     con.query(sql, function (err, result) {
         if (err) { console.log("Erro ao Gravar. Detalhes: " + err); return; }
-        console.log("Localização Atualizada");
+        console.log("Localizacao Atualizada");
     });
 }
 
