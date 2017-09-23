@@ -3,9 +3,9 @@
 //---------------------------------------------------------------------------
 // Banco de Dados SQL
 var con_host = "br-cdbr-azure-south-b.cloudapp.net";         // endereço do host
-var con_user = "b06799fb954ded";                             // usuario
-var con_pwd = "d8a197e8";                                   // senha
-var con_db = "dbrastreadores";                              // nome do banco de dados
+var con_user = "bad1618d895dbf";                             // usuario
+var con_pwd = "59b6e38c";                                   // senha
+var con_db = "dbrastrear";                              // nome do banco de dados
 
 var s_port = 20500;                 // Porta de comunicaçao UDP
 
