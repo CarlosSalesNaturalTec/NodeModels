@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 // Carrega módulo UDP e outros
 //---------------------------------------------------------------------------
-var host = "localhost";
+var host = "104.41.30.130";
 var c_port = 20500;
 var dgram = require("dgram");
 var client = dgram.createSocket("udp4");

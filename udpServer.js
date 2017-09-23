@@ -53,9 +53,10 @@ server.on("message", function (msg, rinfo) {
     var msgstr = msg.toString("ascii");
     var msg_array = msgstr.split(',');
 
-    //01 - Resposta aos comandos TX e UP
+    //01 - Resposta aos comandos TX , UP e MQ
     var verificaTX = msgstr.indexOf(",TX#"); if (verificaTX != -1) { responder_txup = 1 }
     var verificaUP = msgstr.indexOf(",UP#"); if (verificaUP != -1) { responder_txup = 1 }
+    var verificaMQ = msgstr.indexOf(",MQ#"); if (verificaMQ != -1) { responder_txup = 1 }
     if (responder_txup == 1) {
         salva_mensagem(msg, rinfo.address, rinfo.port, msg_array[1]);
         responde_TXUP(msg, rinfo.address, rinfo.port);
