@@ -2,14 +2,12 @@
 // PARÂMETROS
 //---------------------------------------------------------------------------
 // Banco de Dados SQL
-var con_host = "br-cdbr-azure-south-b.cloudapp.net";         // endereço do host
+var con_host = "br-cdbr-azure-south-b.cloudapp.net";         // endereço do host Banco de Dados MySQL
 var con_user = "b7bff2566ddc00";                             // usuario
 var con_pwd = "fc6426c2";                                   // senha
 var con_db = "dbrastreio";                              // nome do banco de dados
 
 var s_port = 20500;                 // Porta de comunicaçao UDP
-
-//===========================================================================
 
 
 //---------------------------------------------------------------------------
@@ -94,7 +92,11 @@ function salva_mensagem(param1, param2, param3, param4) {
         ")";
 
     con.query(sql, function (err, result) {
-        if (err) { console.log("Erro ao Gravar. Detalhes: " + err); con.destroy(); return; }
+        if (err) { 
+            con.destroy(); 
+            console.log("Erro ao Gravar. Detalhes: " + err); 
+            return; 
+        }
         console.log("Mensagem gravada em Banco de dados.");
     });
 }
@@ -136,7 +138,7 @@ function salva_mensagem_localizacao(loc_msg, loc_adress, loc_port) {
         Latitude = montaLatitude(myarray[6]);
         Longitude = montaLongitude(myarray[7]);
 
-        Speed = "0"; // myarray[8];
+        Speed = myarray[8];
         Course = myarray[9];
 
         MensagemStatus = myarray[10];
@@ -173,7 +175,11 @@ function salva_mensagem_localizacao(loc_msg, loc_adress, loc_port) {
         ")";
 
     con.query(sql, function (err, result) {
-        if (err) { console.log("Erro ao Gravar. Detalhes: " + err); con.destroy(); return; }
+        if (err) { 
+            con.destroy(); 
+            console.log("Erro ao salvar localizacao. Detalhes: " + err); 
+            return; 
+        }
         console.log("Localizacao armazenada em Historico");
     });
 
@@ -182,11 +188,15 @@ function salva_mensagem_localizacao(loc_msg, loc_adress, loc_port) {
         "LocalizacaoData = '" + MensagemData + "'," +
         "Latitude = '" + Latitude + "'," +
         "Longitude = '" + Longitude + "'," +
-        "Speed = " + Speed + " " +
+        "Speed = '" + Speed + "' " +
         "where SN = '" + SN + "'";
 
     con.query(sql, function (err, result) {
-        if (err) { console.log("Erro ao Gravar. Detalhes: " + err); con.destroy(); return; }
+        if (err) { 
+            con.destroy(); 
+            console.log("Erro ao Gravar. Detalhes: " + err); 
+            return; 
+        }
         console.log("Localizacao Atualizada");
     });
 }
