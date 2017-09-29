@@ -7,7 +7,7 @@ var con_user = "b7bff2566ddc00";                             // usuario
 var con_pwd = "fc6426c2";                                   // senha
 var con_db = "dbrastreio";                              // nome do banco de dados
 
-var s_port = 20500;                 // Porta de comunicaçao UDP
+var s_port = 8082;                 // Porta de comunicaçao UDP
 
 
 //---------------------------------------------------------------------------
